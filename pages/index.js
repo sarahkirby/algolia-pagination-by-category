@@ -1,5 +1,7 @@
-const HomePage = () => {
-  return <h1>Home Page</h1>;
+import Search from 'components/Search';
+
+const SearchPage = () => {
+  return <Search />;
 };
 
-export default HomePage;
+export default SearchPage;
