@@ -11,7 +11,7 @@ export const algoliaHelper = algoliasearchHelper(client, indexName, {
   hitsPerPage: 4,
 });
 
-export const searchCategories = {
+export const resultsByCategory = {
   courses: { hits: [], nbHits: 0 },
   events: { hits: [], nbHits: 0 },
   news: { hits: [], nbHits: 0 },

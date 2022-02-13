@@ -4,14 +4,14 @@ import debounce from 'lodash.debounce';
 import {
   algoliaHelper,
   derivedHelpers,
-  searchCategories,
+  resultsByCategory,
   removeEventListeners,
 } from 'utils/algolia-search';
 import SearchLayout from './SearchLayout';
 
 const Search = () => {
   const page = useRef(0);
-  const [results, setResults] = useState(searchCategories);
+  const [results, setResults] = useState(resultsByCategory);
   const [isInstantSearch, setIsInstantSearch] = useState(true);
 
   const handleChange = (e) => {
