@@ -22,7 +22,7 @@ const Input = styled.input`
 
 const Grid = styled.div`
   --columns: 1;
-  margin-bottom: 70px;
+  margin-bottom: 50px;
   display: grid;
   grid-gap: 30px 0;
   grid-template-columns: repeat(var(--columns), minmax(0, 1fr));
@@ -82,18 +82,6 @@ const Button = styled.button`
 `;
 
 const SearchLayout = ({ results, handleChange, loadMoreResults }) => {
-  const getTotalResults = () => {
-    let total = 0;
-    let resultCount = 0;
-
-    Object.entries(results).forEach(([_, value]) => {
-      total = total + value.nbHits;
-      resultCount = resultCount + value.hits.length;
-    });
-
-    return `You’ve viewed ${resultCount} of ${total} results`;
-  };
-
   return (
     <Container>
       <Input onChange={(e) => handleChange(e)} />
@@ -107,6 +95,13 @@ const SearchLayout = ({ results, handleChange, loadMoreResults }) => {
           </Card>
         ))}
       </Grid>
+      <ButtonContainer>
+        <p>
+          You&apos;ve viewed {results.courses.hits.length} of{' '}
+          {results.courses.nbHits} results
+        </p>
+        <Button onClick={() => loadMoreResults('courses')}>Load more</Button>
+      </ButtonContainer>
 
       <H2>Events</H2>
       <Grid>
@@ -117,6 +112,13 @@ const SearchLayout = ({ results, handleChange, loadMoreResults }) => {
           </Card>
         ))}
       </Grid>
+      <ButtonContainer>
+        <p>
+          You&apos;ve viewed {results.events.hits.length} of{' '}
+          {results.events.nbHits} results
+        </p>
+        <Button onClick={() => loadMoreResults('events')}>Load more</Button>
+      </ButtonContainer>
 
       <H2>News</H2>
       <Grid>
@@ -129,8 +131,11 @@ const SearchLayout = ({ results, handleChange, loadMoreResults }) => {
       </Grid>
 
       <ButtonContainer>
-        <p>{getTotalResults()}</p>
-        <Button onClick={loadMoreResults}>Load more</Button>
+        <p>
+          You&apos;ve viewed {results.news.hits.length} of {results.news.nbHits}{' '}
+          results
+        </p>
+        <Button onClick={() => loadMoreResults('news')}>Load more</Button>
       </ButtonContainer>
     </Container>
   );

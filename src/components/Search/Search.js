@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import debounce from 'lodash.debounce';
 
 import {
@@ -7,10 +7,10 @@ import {
   resultsByCategory,
   removeEventListeners,
 } from 'utils/algolia-search';
+
 import SearchLayout from './SearchLayout';
 
 const Search = () => {
-  const page = useRef(0);
   const [results, setResults] = useState(resultsByCategory);
   const [isInstantSearch, setIsInstantSearch] = useState(true);
 
@@ -39,27 +39,32 @@ const Search = () => {
   }, []);
 
   // Paginated search results
-  const loadMoreResults = () => {
+  const loadMoreResults = (category) => {
     if (isInstantSearch) {
+      removeEventListeners();
       setIsInstantSearch(false);
     }
 
-    removeEventListeners();
+    const page = results[category].page + 1;
+    algoliaHelper.setPage(page).search();
 
-    page.current = page.current + 1;
-    algoliaHelper.setPage(page.current).search();
+    // Get category derived helper
+    const categoryHelper = derivedHelpers.find(
+      (item) => item.category === category
+    );
+
+    if (!categoryHelper) return;
 
     // Save paginated results
-    derivedHelpers.forEach((item) => {
-      item.helper.on('result', (data) => {
-        setResults((prevState) => ({
-          ...prevState,
-          [item.category]: {
-            ...data,
-            hits: [...prevState[item.category].hits, ...data.hits],
-          },
-        }));
-      });
+    categoryHelper.helper.once('result', (data) => {
+      setResults((prevState) => ({
+        ...prevState,
+        [category]: {
+          ...data,
+          hits: [...prevState[category].hits, ...data.hits],
+          page,
+        },
+      }));
     });
   };
 

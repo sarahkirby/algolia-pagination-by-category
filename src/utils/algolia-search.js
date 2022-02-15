@@ -12,9 +12,9 @@ export const algoliaHelper = algoliasearchHelper(client, indexName, {
 });
 
 export const resultsByCategory = {
-  courses: { hits: [], nbHits: 0 },
-  events: { hits: [], nbHits: 0 },
-  news: { hits: [], nbHits: 0 },
+  courses: { hits: [], nbHits: 0, page: 0 },
+  events: { hits: [], nbHits: 0, page: 0 },
+  news: { hits: [], nbHits: 0, page: 0 },
 };
 
 export const derivedHelpers = [
